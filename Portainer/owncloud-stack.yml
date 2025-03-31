@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  owncloud:
+    image: owncloud/server:${OWNCLOUD_VERSION:-latest}
+    container_name: owncloud
+    restart: always
+    ports:
+      - "${OWNCLOUD_PORT:-8080}:8080"
+    depends_on:
+      - mariadb
+      - redis
+    environment:
+      - OWNCLOUD_DOMAIN=${OWNCLOUD_DOMAIN:-localhost:8080}
+      - OWNCLOUD_DB_TYPE=mysql
+      - OWNCLOUD_DB_NAME=${DB_NAME:-owncloud}
+      - OWNCLOUD_DB_USERNAME=${DB_USER:-owncloud}
+      - OWNCLOUD_DB_PASSWORD=${DB_PASSWORD:-owncloud_password}
+      - OWNCLOUD_DB_HOST=mariadb
+      - OWNCLOUD_ADMIN_USERNAME=${OWNCLOUD_ADMIN_USERNAME:-admin}
+      - OWNCLOUD_ADMIN_PASSWORD=${OWNCLOUD_ADMIN_PASSWORD:-admin_password}
+      - OWNCLOUD_MYSQL_UTF8MB4=true
+      - OWNCLOUD_REDIS_ENABLED=true
+      - OWNCLOUD_REDIS_HOST=redis
+      - OWNCLOUD_TRUSTED_DOMAINS=localhost,127.0.0.1,localhost:8080,172.18.70.240,your.domain.com
+
+    volumes:
+      - owncloud_data:/mnt/data
+    networks:
+      - owncloud_network
+
+  mariadb:
+    image: mariadb:${MARIADB_VERSION:-10.6}
+    container_name: owncloud_mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-root_password}
+      - MYSQL_USER=${DB_USER:-owncloud}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-owncloud_password}
+      - MYSQL_DATABASE=${DB_NAME:-owncloud}
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - owncloud_network
+
+  redis:
+    image: redis:${REDIS_VERSION:-6}
+    container_name: owncloud_redis
+    restart: always
+    command: --databases 1
+    volumes:
+      - redis_data:/data
+    networks:
+      - owncloud_network
+
+volumes:
+  owncloud_data:
+  mariadb_data:
+  redis_data:
+
+networks:
+  owncloud_network:
+    driver: bridge 

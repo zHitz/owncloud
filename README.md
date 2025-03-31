@@ -18,7 +18,7 @@ This repository contains Docker Compose configuration for deploying OwnCloud wit
 1. Clone or download this repository
 2. Navigate to the project directory:
    ```
-   cd Lab_PVT
+   cd Owncloud
    ```
 3. Start the services:
    ```
