@@ -1,68 +1,76 @@
-# Portainer cho OwnCloud
+# Portainer for OwnCloud
 
-Thư mục này chứa cấu hình để chạy và quản lý OwnCloud thông qua Portainer.
+This directory contains configuration to run and manage OwnCloud through Portainer.
 
-## Cấu trúc thư mục
+## Directory Structure
 
-- `docker-compose.yml`: File cấu hình để chạy Portainer
-- `owncloud-stack.yml`: File stack mẫu để triển khai OwnCloud trong Portainer
+- `docker-compose.yml`: Configuration file to run Portainer
+- `owncloud-stack.yml`: Sample stack file to deploy OwnCloud in Portainer
+- `setup-owncloud.sh`: Setup script for OwnCloud configuration
 
-## Hướng dẫn sử dụng
+## Usage Instructions
 
-### Bước 1: Khởi động Portainer
+### Step 1: Start Portainer
 
 ```bash
 docker-compose up -d
 ```
 
-### Bước 2: Truy cập Portainer
+### Step 2: Access Portainer
 
-Mở trình duyệt và truy cập: `http://localhost:9000`
+Open your browser and navigate to: `http://localhost:9000`
 
-Khi đăng nhập lần đầu:
-1. Tạo tài khoản quản trị viên
-2. Chọn môi trường Local để quản lý
+When logging in for the first time:
+1. Create an administrator account
+2. Select the Local environment for management
 
-### Bước 3: Tạo và triển khai OwnCloud Stack
+### Step 3: Create and Deploy OwnCloud Stack
 
-1. Từ menu bên trái, chọn `Stacks`
-2. Nhấp vào `Add stack`
-3. Đặt tên stack (ví dụ: "owncloud")
-4. Copy nội dung từ file `owncloud-stack.yml` vào trường Web editor
-5. Nhấp vào `Deploy the stack`
+1. From the left menu, select `Stacks`
+2. Click on `Add stack`
+3. Name the stack (example: "owncloud")
+4. Copy the contents from the `owncloud-stack.yml` file into the Web editor field
+5. Click on `Deploy the stack`
 
-### Bước 4: Truy cập OwnCloud
+### Step 4: Access OwnCloud
 
-Sau khi triển khai thành công, bạn có thể truy cập OwnCloud tại:
-- `http://localhost:8080` (nếu giữ cổng mặc định)
-- `http://localhost:8081` (nếu đã cấu hình trong biến môi trường)
+After successful deployment, you can access OwnCloud at:
+- `http://localhost:8080` (if using default port)
+- `http://localhost:8081` (if configured in environment variables)
 
-### Quản lý OwnCloud trong Portainer
+### Managing OwnCloud in Portainer
 
-Với Portainer bạn có thể:
-- Giám sát tài nguyên sử dụng
-- Xem logs của các container
-- Quản lý volumes và networks
-- Khởi động lại, dừng và cập nhật các container
-- Mở terminal console vào các container
+With Portainer you can:
+- Monitor resource usage
+- View container logs
+- Manage volumes and networks
+- Restart, stop, and update containers
+- Open terminal console into containers
 
-## Biến môi trường
+## Environment Variables
 
-Các biến môi trường có thể được cấu hình trong Portainer khi triển khai stack:
+Environment variables can be configured in Portainer when deploying the stack:
 
 ### OwnCloud
-- `OWNCLOUD_VERSION`: Phiên bản OwnCloud (mặc định: latest)
-- `OWNCLOUD_PORT`: Cổng để truy cập OwnCloud (mặc định: 8080)
-- `OWNCLOUD_DOMAIN`: Domain của OwnCloud (mặc định: localhost:8080)
-- `OWNCLOUD_ADMIN_USERNAME`: Tên người dùng admin (mặc định: admin)
-- `OWNCLOUD_ADMIN_PASSWORD`: Mật khẩu admin (mặc định: admin_password)
+- `OWNCLOUD_VERSION`: OwnCloud version (default: latest)
+- `OWNCLOUD_PORT`: Port to access OwnCloud (default: 8080)
+- `OWNCLOUD_DOMAIN`: OwnCloud domain (default: localhost:8080)
+- `OWNCLOUD_ADMIN_USERNAME`: Admin username (default: admin)
+- `OWNCLOUD_ADMIN_PASSWORD`: Admin password (default: admin_password)
 
 ### Database
-- `MARIADB_VERSION`: Phiên bản MariaDB (mặc định: 10.6)
-- `DB_ROOT_PASSWORD`: Mật khẩu root của MariaDB (mặc định: root_password)
-- `DB_NAME`: Tên database (mặc định: owncloud)
-- `DB_USER`: Tên người dùng database (mặc định: owncloud)
-- `DB_PASSWORD`: Mật khẩu database (mặc định: owncloud_password)
+- `MARIADB_VERSION`: MariaDB version (default: 10.6)
+- `DB_ROOT_PASSWORD`: MariaDB root password (default: root_password)
+- `DB_NAME`: Database name (default: owncloud)
+- `DB_USER`: Database username (default: owncloud)
+- `DB_PASSWORD`: Database password (default: owncloud_password)
 
 ### Redis
-- `REDIS_VERSION`: Phiên bản Redis (mặc định: 6) 
+- `REDIS_VERSION`: Redis version (default: 6)
+
+## Security Notes
+
+- For production use, change all default passwords
+- Consider using Docker secrets for sensitive information
+- Implement proper backup strategies
+- Configure HTTPS for secure access 
